@@ -2,18 +2,15 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
 
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" type="text/css" href="css/couchpotato.css">
-        <link rel="shortcut icon" href="img/favicon.ico">
-
-        <title>Couch Potato</title>
-    </head>
-    <body>
-    <div id="footer">
+<div id="footer">
+                <br>
                 <hr>
-                <p id="footerText">[ footer text ]</p>
+                <p id="footerText" class="reallySmallText">
+                    <a href="#">Privacy Policy</a>
+                    &nbsp;&nbsp;::&nbsp;&nbsp;
+                    <a href="#">Contact</a>
+                    &nbsp;&nbsp;&copy;&nbsp;&nbsp;
+                    2022 couch potato</p>
             </div>
         </div>
     </body>
