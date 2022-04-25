@@ -16,7 +16,9 @@
                 <div id="widgetBar">
 
                     <div class="headerWidget">
-                        [ shopping cart widget ]
+                        <form action="viewOrder">
+                            <input type='submit' value="View Order"/>
+                        </form>
                     </div>
 
                 </div>

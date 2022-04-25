@@ -6,7 +6,7 @@
     Author     : shree
 --%>
 
-<sql:query var="restaurants" dataSource="jdbc/couchpotato">
+<%--<sql:query var="restaurants" dataSource="jdbc/couchpotato">
     SELECT * FROM restaurant
 </sql:query>
 
@@ -19,7 +19,7 @@
 <sql:query var="items" dataSource="jdbc/couchpotato">
     SELECT * FROM menu WHERE rest_id = ?
     <sql:param value="${pageContext.request.queryString}"/>
-</sql:query>
+</sql:query>--%>
             
     
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -39,10 +39,10 @@
 <body>
 
     <div id="categoryLeftColumn">
-        <c:forEach var="restaurant" items="${restaurants.rows}">
+        <c:forEach var="restaurant" items="${restaurants}">
 
             <c:choose>
-                <c:when test="${restaurant.rest_id == pageContext.request.queryString}"> 
+                <c:when test="${restaurant.restId == pageContext.request.queryString}"> 
                    <div class="categoryButton" id="selectedCategory">
                         <span class="categoryText">
                             ${restaurant.name}
@@ -50,7 +50,7 @@
                     </div>
                 </c:when>
                 <c:otherwise>
-                    <a href="menu?${restaurant.rest_id}" class="categoryButton">
+                    <a href="menu?${restaurant.restId}" class="categoryButton">
                         <div class="categoryText">
                             ${restaurant.name}
                         </div>
@@ -64,11 +64,11 @@
 
         <div id="categoryRightColumn">
             <p id="categoryTitle">
-                <span style="background-color: #f5eabe; padding: 7px;">${selectedRestaurant.rows[0].name}</span>
+                <span style="background-color: #f5eabe; padding: 7px;">${selectedRestaurant.name}</span>
             </p>
 
             <table id="productTable">
-                <c:forEach var="item" items="${items.rows}" varStatus="iter">
+                <c:forEach var="item" items="${items}" varStatus="iter">
                     <tr class="${((iter.index % 2) == 0) ? 'lightBlue' : 'white'}">
                         <td>
                             <img src="${initParam.productImagePath}${item.item}.png" alt="${item.item}">        
@@ -76,16 +76,17 @@
                         <td>
                             ${item.item}
                             <br>
-                            <span class="smallText">${item.meal_type}</span>
+                            <span class="smallText">${item.mealType}</span>
                         </td>
                         <td>
                             Rs. ${item.price} / unit
                         </td>
                         <td>
-                            <form action="addToCart" method="post">
+                            <form action="addToOrder" method="post">
                                 <input type="hidden"
-                                       name="productId"
-                                       value="${item.item_id}">
+                                       name="itemId"
+                                       id="itemID"
+                                       value="${item.itemId}">
                                 <input type="submit"
                                        value="add to order">
                             </form>

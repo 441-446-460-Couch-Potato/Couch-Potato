@@ -4,6 +4,10 @@
  */
 package controller;
 
+import entity.Customer;
+import entity.ListItems;
+import entity.ListItemsPK;
+import jakarta.ejb.EJB;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -11,15 +15,76 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import session.RestaurantFacade;
+import entity.Restaurant;
+import entity.Menu;
+import java.util.Collection;
+import java.util.*;
+import java.util.stream.Collectors;
+import session.ListItemsFacade;
+import session.MenuFacade;
+import session.OrdersFacade;
+import entity.Orders;
+import session.CustomerFacade;
 
 /**
  *
  * @author shree
  */
-@WebServlet(name = "ControllerServlet", urlPatterns = {"/menu", "/addToOrder", "/viewOrder", "/updateOrder"})
+@WebServlet(name = "ControllerServlet", loadOnStartup = 1, urlPatterns = {"/menu", "/addToOrder", "/viewOrder", "/updateOrder"})
 public class ControllerServlet extends HttpServlet {
+    
+    @EJB
+    private RestaurantFacade restaurantFacade;
+    
+    @EJB
+    private MenuFacade menuFacade;
+    
+    @EJB
+    private ListItemsFacade liFacade;
+    
+    @EJB
+    private OrdersFacade ordersFacade;
+    
+    @EJB
+    private CustomerFacade customerFacade;        
+    
+            
+    String restId;
+    String cur_order;
+    String cust_id="1"; //Default
+    
+    int flag=0;
+    
+    Orders o;
+    
+    @Override
+    public void init() throws ServletException {
 
+        // store restaurant list in servlet context
+        getServletContext().setAttribute("restaurants", restaurantFacade.findAll());
+        Collection<Orders> orders = ordersFacade.findAll();
+        int maxOrder=0;
+        for(Orders or:orders){
+            String orderID=or.getOrderId();
+            if(orderID!=null){
+                if (Integer.parseInt(orderID)>maxOrder){
+                    maxOrder=Integer.parseInt(orderID);
+                }
+            }
+        }
+        maxOrder=maxOrder+1;
+        cur_order=Integer.toString(maxOrder);
+        getServletContext().setAttribute("cur_order", cur_order);
+        
+        Customer customer = customerFacade.find(cust_id);
+        
+        
+        o = new Orders(cur_order, 0, 0);
+        o.setCustId(customer);
+    }
 
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
@@ -27,16 +92,57 @@ public class ControllerServlet extends HttpServlet {
         String userPath = request.getServletPath();        
         // if category page is requested
         if (userPath.equals("/menu")) {
-            // TODO: Implement category request
+            
+            restId = request.getQueryString();
+            
+            if (restId != null) {
+
+                // get selected category
+                Restaurant selectedRestaurant = restaurantFacade.find(restId);
+
+                // place selected category in request scope
+                request.setAttribute("selectedRestaurant", selectedRestaurant);
+
+                // get all products for selected category
+                Collection<Menu> items = selectedRestaurant.getMenuCollection();
+                
+                // place category products in request scope
+                request.setAttribute("items", items);
+                
+                if (flag==0){
+                o.setRestId(selectedRestaurant);
+                ordersFacade.create(o);
+                flag++;
+                }
+            }
 
         // if cart page is requested
         } else if (userPath.equals("/viewOrder")) {
             // TODO: Implement cart page request
-
+            
+            Orders current=ordersFacade.find(cur_order);
+            Collection<ListItems> cur_items= new ArrayList<>();//current.getListItemsCollection();
+            Collection<ListItems> all_items=liFacade.findAll();
+            for(ListItems li:all_items){
+            if(li.getListItemsPK().getOrderId().equals(cur_order)){
+                    cur_items.add(li);
+                    System.out.println("HERE");
+                }
+            }
+            
+            System.out.println(cur_items.size());
+            
+            request.setAttribute("orderItems", cur_items);
+            request.setAttribute("order", current);
             userPath = "/order";
+            
+        }
+            
+            
+            
 
         // if checkout page is requested
-        } 
+        
 
         // use RequestDispatcher to forward request internally
         String url = "/WEB-INF/view" + userPath + ".jsp";
@@ -57,16 +163,35 @@ public class ControllerServlet extends HttpServlet {
 
         // if addToCart action is called
         if (userPath.equals("/addToOrder")) {
-            // TODO: Implement add product to cart action
+            // TODO: Implement add item to order action
+            //String body = request.getParameter("itemId");
+            String itemID = request.getParameter("itemId");
+            int itemID_int=Integer.parseInt(itemID);
+            System.out.println(itemID_int);
+            if(itemID!=null)
+            {
+                //ListItems li = new ListItems();
+                Menu menuItem = menuFacade.find(itemID);
+                ListItems li = new ListItems(cur_order, itemID);
+                li.setItem(menuItem.getItem());
+                li.setPrice(menuItem.getPrice());
+                li.setQuantity(1);
+                liFacade.create(li);
+                o.setNumItems(o.getNumItems()+1);
+                o.setTotal(o.getTotal()+li.getPrice());
+                ordersFacade.edit(o);
+                
+            }
+            
+                        
+            
 
         // if updateCart action is called
-        } else if (userPath.equals("/updateOrder")) {
-            // TODO: Implement update cart action
-
-        // if purchase action is called
         } 
 
         // use RequestDispatcher to forward request internally
+        userPath="/menu";
+
         String url = "/WEB-INF/view" + userPath + ".jsp";
 
         try {

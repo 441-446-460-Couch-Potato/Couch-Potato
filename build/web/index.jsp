@@ -6,9 +6,9 @@
     Author     : shree
 --%>
 
-<sql:query var="restaurants" dataSource="jdbc/couchpotato">
+<%--<sql:query var="restaurants" dataSource="jdbc/couchpotato">
     SELECT * from restaurant;
-</sql:query>
+</sql:query>--%>
 
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -40,9 +40,9 @@
 
 
             <div id="indexRightColumn">
-                <c:forEach var="restaurant" items="${restaurants.rows}">
+                <c:forEach var="restaurant" items="${restaurants}">
                     <div class="categoryBox">
-                        <a href="menu?${restaurant.rest_id}">
+                        <a href="menu?${restaurant.restId}">
 
                             <span class="categoryLabelText">${restaurant.name}</span>
 
