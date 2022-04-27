@@ -16,9 +16,7 @@
                 <div id="widgetBar">
 
                     <div class="headerWidget">
-                        <form action="viewOrder">
-                            <input type='submit' value="View Order"/>
-                        </form>
+                        
                     </div>
 
                 </div>
