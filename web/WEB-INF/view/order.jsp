@@ -17,6 +17,11 @@
         <title>Couch Potato</title>
     </head>
     
+<div class="headerWidget">
+                        <form action="changeProfile">
+                            <input type='submit' value="Log Out"/>
+                        </form>
+</div>  
     
 <div id="centerColumn">
 
