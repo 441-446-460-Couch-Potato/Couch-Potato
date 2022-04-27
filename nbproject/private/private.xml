@@ -3,16 +3,19 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/home/shree/Sem_6/OOAD/CouchPotato/src/java/entity/Customer.java</file>
             <file>file:/home/shree/Sem_6/OOAD/CouchPotato/src/java/entity/ListItems.java</file>
+            <file>file:/home/shree/Sem_6/OOAD/CouchPotato/web/WEB-INF/jspf/header.jspf</file>
             <file>file:/home/shree/Sem_6/OOAD/CouchPotato/src/java/controller/ControllerServlet.java</file>
+            <file>file:/home/shree/Sem_6/OOAD/CouchPotato/src/java/session/ListItemsFacade.java</file>
+            <file>file:/home/shree/Sem_6/OOAD/CouchPotato/src/java/entity/Orders.java</file>
+            <file>file:/home/shree/Sem_6/OOAD/CouchPotato/src/java/session/AbstractFacade.java</file>
+            <file>file:/home/shree/Sem_6/OOAD/CouchPotato/setup/glassfish-resources.xml</file>
+            <file>file:/home/shree/Sem_6/OOAD/CouchPotato/web/WEB-INF/web.xml</file>
+            <file>file:/home/shree/Sem_6/OOAD/CouchPotato/web/index.jsp</file>
             <file>file:/home/shree/Sem_6/OOAD/CouchPotato/src/java/entity/Menu.java</file>
-            <file>file:/home/shree/Sem_6/OOAD/CouchPotato/src/java/session/RestaurantFacade.java</file>
-            <file>file:/home/shree/Sem_6/OOAD/CouchPotato/src/java/entity/Restaurant.java</file>
             <file>file:/home/shree/Sem_6/OOAD/CouchPotato/web/WEB-INF/view/menu.jsp</file>
             <file>file:/home/shree/Sem_6/OOAD/CouchPotato/web/WEB-INF/view/order.jsp</file>
-            <file>file:/home/shree/Sem_6/OOAD/CouchPotato/src/java/session/AbstractFacade.java</file>
-            <file>file:/home/shree/Sem_6/OOAD/CouchPotato/src/java/session/MenuFacade.java</file>
-            <file>file:/home/shree/Sem_6/OOAD/CouchPotato/src/java/entity/ListItemsPK.java</file>
         </group>
     </open-files>
 </project-private>
