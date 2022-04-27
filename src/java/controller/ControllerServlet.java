@@ -31,7 +31,7 @@ import session.CustomerFacade;
  *
  * @author shree
  */
-@WebServlet(name = "ControllerServlet", loadOnStartup = 1, urlPatterns = {"/menu", "/addToOrder", "/viewOrder", "/updateOrder"})
+@WebServlet(name = "ControllerServlet", loadOnStartup = 1, urlPatterns = {"/menu", "/addToOrder", "/viewOrder", "/updateOrder","/customerLogin","/deliveryAgentLogin","/viewCustomerDetail","/changeProfile"})
 public class ControllerServlet extends HttpServlet {
     
     @EJB
@@ -91,7 +91,7 @@ public class ControllerServlet extends HttpServlet {
 
         String userPath = request.getServletPath();        
         // if category page is requested
-        if (userPath.equals("/menu")) {
+        if(userPath.equals("/menu")) {
             
             restId = request.getQueryString();
             
@@ -136,9 +136,23 @@ public class ControllerServlet extends HttpServlet {
             request.setAttribute("order", current);
             userPath = "/order";
             
+         //if login as delivery agent
+        }else if (userPath.equals("/deliveryAgentLogin")) {
+            // TODO: Implement view order for delivery Agent page
+            Collection<Orders> existingOrders= new ArrayList<>();
+            Collection<Orders> order=ordersFacade.findAll();
+            for(Orders or:order){
+                existingOrders.add(or);
+            }
+             //System.out.println(existingOrders);
+             request.setAttribute("order", existingOrders);
+            userPath = "/allOrders";
+            
+           // if login as customer
+        }else if (userPath.equals("/customerLogin")) {
+            // TODO: Implement view order for customer
+            userPath = "/mainMenu";
         }
-            
-            
             
 
         // if checkout page is requested
@@ -146,7 +160,10 @@ public class ControllerServlet extends HttpServlet {
 
         // use RequestDispatcher to forward request internally
         String url = "/WEB-INF/view" + userPath + ".jsp";
-
+        if (userPath.equals("/changeProfile")) {
+            // TODO: Implement view order for customer
+             url = "/index.jsp";
+        }
         try {
             request.getRequestDispatcher(url).forward(request, response);
         } catch (Exception ex) {
@@ -180,17 +197,22 @@ public class ControllerServlet extends HttpServlet {
                 o.setNumItems(o.getNumItems()+1);
                 o.setTotal(o.getTotal()+li.getPrice());
                 ordersFacade.edit(o);
-                
+                userPath="/menu";
+            }       
+        }else if(userPath.equals("/viewCustomerDetail")){
+            String custID = request.getParameter("custId");
+            //int custID_int=Integer.parseInt(custID);
+            if(custID!=null){
+             Customer c = customerFacade.find(custID);
+             request.setAttribute("customer",c);
+             System.out.println(c);
+             
             }
-            
-                        
-            
-
-        // if updateCart action is called
-        } 
+            userPath="/customerDetails";
+        }
 
         // use RequestDispatcher to forward request internally
-        userPath="/menu";
+        
 
         String url = "/WEB-INF/view" + userPath + ".jsp";
 
