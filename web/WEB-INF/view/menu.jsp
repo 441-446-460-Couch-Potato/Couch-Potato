@@ -37,6 +37,21 @@
     </head>
     
 <body>
+    <div id="widgetBar">
+
+                    <div class="headerWidget">
+                        <form action="viewOrder">
+                            <input type='submit' value="View Order"/>
+                        </form>
+                    </div>
+                    
+                    <div class="headerWidget">
+                        <form action="changeProfile">
+                            <input type='submit' value="Log out"/>
+                        </form>
+                    </div>
+
+    </div>
 
     <div id="categoryLeftColumn">
         <c:forEach var="restaurant" items="${restaurants}">
