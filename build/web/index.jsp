@@ -21,5 +21,12 @@
         <form action="customerLogin">
                             <input type='submit' value="Customer"/>
         </form>
+        
+        </form>
+        
+        <h1></h1>
+        <form action="restManagerLogin">
+                            <input type='submit' value="Restaurant Manager"/>
+        </form>
     </body>
 </html>
