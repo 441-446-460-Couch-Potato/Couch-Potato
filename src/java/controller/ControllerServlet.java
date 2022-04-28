@@ -31,7 +31,7 @@ import session.CustomerFacade;
  *
  * @author shree
  */
-@WebServlet(name = "ControllerServlet", loadOnStartup = 1, urlPatterns = {"/menu", "/addToOrder", "/viewOrder", "/updateOrder","/customerLogin","/deliveryAgentLogin","/viewCustomerDetail","/changeProfile"})
+@WebServlet(name = "ControllerServlet", loadOnStartup = 1, urlPatterns = {"/menu", "/addToOrder", "/viewOrder", "/updateOrder","/customerLogin","/deliveryAgentLogin","/viewCustomerDetail","/changeProfile","/restManagerLogin","/totalcalc"})
 public class ControllerServlet extends HttpServlet {
     
     @EJB
@@ -152,9 +152,35 @@ public class ControllerServlet extends HttpServlet {
         }else if (userPath.equals("/customerLogin")) {
             // TODO: Implement view order for customer
             userPath = "/mainMenu";
+        }else if(userPath.equals("/restManagerLogin")){
+            userPath ="/restaurant";
+        }else if(userPath.equals("/totalcalc")){
+            restId = request.getQueryString();
+            
+            if (restId != null) {
+
+                // get selected category
+                Restaurant selectedRestaurant = restaurantFacade.find(restId);
+
+                // place selected category in request scope
+                request.setAttribute("selectedRestaurant", selectedRestaurant);
+                int count =0;
+                Collection<Orders> order=ordersFacade.findAll();
+                for(Orders or:order){
+                String rest_id = or.getRestId().getRestId();
+                if(rest_id.equals(selectedRestaurant.getRestId()))
+                {
+                    count+=1;
+                }
+                }
+                System.out.println(count);
+                request.setAttribute("count", count);
+                
+
+            
         }
             
-
+        }
         // if checkout page is requested
         
 
